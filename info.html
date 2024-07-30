@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANTALYA BÜYÜKŞEHİR BELEDİYESİ</title>
+    <link href="kg.css" rel="stylesheet">
+
+    <style>
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="header1">KREŞ VE GÜNDÜZ BAKIMEVİ ÖĞRENCİ KAYIT BAŞVURU FORMU</h1>
+
+    <!-- Başvuranın bilgisi -->
+    <h2 id="header1">BAŞVURANIN BİLGİSİ </h2>
+    <hr/> 
+    <label for="phone">Cep Telefonu:</label>
+    <input type="tel" id="phone" placeholder="0xxx xxx xx xx"
+           pattern="0[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}">
+    <br>
+
+    <!-- Çocuk bilgisi -->
+    <h2 id="header1">ÇOCUK BİLGİSİ </h2>
+    <hr/> 
+    <label for="NameSurname" class="required">Çocuğun Adı Soyadı</label>
+    <input id="bilgi">
+    <br><br>
+
+    <label for="IDNo" class="required">Çocuğun T.C. No</label>
+    <input type="text" id="IDNo" name="IDNo" pattern="\d{11}" maxlength="11" required>
+    <br><br>
+    
+    <div id="sex" class="required">
+        <input type="radio" id="Female" value="Female" name="title">
+        <label for="Female">Kız</label>
+        
+        <input type="radio" id="Male" value="Male" name="title">
+        <label for="Male">Erkek</label>
+      
+        <input type="radio" id="Undecided" value="Undecided" name="title">
+        <label for="Undecided">Kararsız</label>
+    </div>
+    <br><br>
+
+    <label for="apply">Başvuru Yapılan Kreş ve Gündüz Bakımevi</label>
+    <select>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+    </select>
+    <br><br>
+
+
+
+    <label for="address">Adres</label>
+    <textarea id="address" name="address" rows="4" cols="50" style="resize: both;"></textarea>
+    <br><br>
+
+    <label for="dateBirth">Doğum Tarihi</label>
+    <input type="date" id="bilgi">
+    <br><br>
+
+    <!-- Anne bilgisi -->
+    <h2 id="header1">ANNE BİLGİSİ</h2>
+    <hr/> 
+    <input type="radio" id="aliveMother" name="motherStatus" value="alive" onclick="toggleParentInfo('motherInfo', this)">
+    <label for="aliveMother">Sağ</label><br>
+        
+    <input type="radio" id="naturalMother" name="motherStatus" value="natural" onclick="toggleParentInfo('motherInfo', this)">
+    <label for="naturalMother">Öz</label><br>
+      
+    <input type="radio" id="stepMother" name="motherStatus" value="step" onclick="toggleParentInfo('motherInfo', this)">
+    <label for="stepMother">Üvey</label><br>
+
+    <div id="motherInfo" class="hidden">
+        <label for="motherName" class="required">Anne Adı</label>
+        <input type="text" id="motherName" name="motherName">
+        <br><br>
+
+        <label for="motherID" class="required">Anne TC</label>
+        <input type="text" id="motherID" name="motherID" pattern="\d{11}" maxlength="11">
+        <br><br>
+
+        <label for="motherQuestions">Annenin Açık İş Adresi</label>
+        <textarea id="motherQuestions" name="motherQuestions" rows="4" cols="50" style="resize: both;"></textarea>
+        <br><br>
+
+        <label for="motherMeslek">Annenin Mesleği</label>
+        <input id="motherMeslek" name="motherMeslek">
+        <br><br>
+
+        <label for="motherMeslekType" class="required">Annenin Meslek Tipi</label>
+        <div id="motherMeslekType">
+            <input type="radio" id="PersonelMother" value="Personel" name="motherMeslekType">
+            <label for="PersonelMother">Personel</label>
+            
+            <input type="radio" id="MemurMother" value="Memur" name="motherMeslekType">
+            <label for="MemurMother">Memur</label>
+          
+            <input type="radio" id="OzelSekMother" value="OzelSek" name="motherMeslekType">
+            <label for="OzelSekMother">Özel Sektör</label>
+        </div>
+        <br><br>
+
+        <label for="AnneTel">Annenin Cep Telefonu</label>
+        <input type="tel" id="AnneTel" placeholder="0xxx xxx xx xx"
+               pattern="0[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}">
+        <br><br>
+
+        <label for="AnneTel2">Anneye Ulaşılamadığında İrtibat Numarası</label>
+        <input type="tel" id="AnneTel2" placeholder="0xxx xxx xx xx"
+               pattern="0[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}">
+        <br><br>
+
+        <label for="AnneSaat">Annenin Çalışma Saatleri</label>
+        <input type="text" id="AnneSaat" placeholder="Örnek: 08:00-17:00">
+        <br><br>
+    </div>
+
+    <!-- Baba bilgisi -->
+    <h2 id="header1">BABA BİLGİSİ</h2>
+    <hr/> 
+    <input type="radio" id="aliveFather" name="fatherStatus" value="alive" onclick="toggleParentInfo('fatherInfo', this)">
+    <label for="aliveFather">Sağ</label><br>
+         
+    <input type="radio" id="naturalFather" name="fatherStatus" value="natural" onclick="toggleParentInfo('fatherInfo', this)">
+    <label for="naturalFather">Öz</label><br>
+       
+    <input type="radio" id="stepFather" name="fatherStatus" value="step" onclick="toggleParentInfo('fatherInfo', this)">
+    <label for="stepFather">Üvey</label><br>
+
+    <div id="fatherInfo" class="hidden">
+        <label for="fatherName" class="required">Baba Adı</label>
+        <input type="text" id="fatherName" name="fatherName">
+        <br><br>
+
+        <label for="fatherID" class="required">Baba TC</label>
+        <input type="text" id="fatherID" name="fatherID" pattern="\d{11}" maxlength="11">
+        <br><br>
+
+        <label for="fatherQuestions">Babanın Açık İş Adresi</label>
+        <textarea id="fatherQuestions" name="fatherQuestions" rows="4" cols="50" style="resize: both;"></textarea>
+        <br><br>
+
+        <label for="fatherMeslek">Babanın Mesleği</label>
+        <input id="fatherMeslek" name="fatherMeslek">
+        <br><br>
+
+        <label for="fatherMeslekType" class="required">Babanın Meslek Tipi</label>
+        <div id="fatherMeslekType">
+            <input type="radio" id="PersonelFather" value="Personel" name="fatherMeslekType">
+            <label for="PersonelFather">Personel</label>
+            
+            <input type="radio" id="MemurFather" value="Memur" name="fatherMeslekType">
+            <label for="MemurFather">Memur</label>
+          
+            <input type="radio" id="OzelSekFather" value="OzelSek" name="fatherMeslekType">
+            <label for="OzelSekFather">Özel Sektör</label>
+        </div>
+        <br><br>
+
+        <label for="BabaTel">Babanın Cep Telefonu</label>
+        <input type="tel" id="BabaTel" placeholder="0xxx xxx xx xx"
+               pattern="0[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}">
+        <br><br>
+
+        <label for="BabaTel2">Babaya Ulaşılamadığında İrtibat Numarası</label>
+        <input type="tel" id="BabaTel2" placeholder="0xxx xxx xx xx"
+               pattern="0[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}">
+        <br><br>
+
+        <label for="BabaSaat">Babanın Çalışma Saatleri</label>
+        <input type="text" id="BabaSaat" placeholder="Örnek: 08:00-17:00">
+        <br><br>
+    </div>
+
+    <!-- Bakan Bilgisi -->
+    <h2>Bakanın Bilgisi</h2>
+    <hr/> 
+    <label class="required">Bakıcı burada çalışıyor mu?</label>
+    <br>
+    <input type="radio" id="yes" name="caregiverWorking" value="yes" onclick="toggleCaregiverInfo()"> 
+    <label for="yes">Evet</label><br>
+    <input type="radio" id="no" name="caregiverWorking" value="no" onclick="toggleCaregiverInfo()"> 
+    <label for="no">Hayır</label><br>
+
+    <div id="caregiverInfo" class="hidden">
+        <label for="caregiverIDNo" class="required">Bakan Kişinin T.C. No</label>
+        <input type="text" id="caregiverIDNo" name="caregiverIDNo" pattern="\d{11}" maxlength="11">
+        <br>
+        <label for="caregiverPhone" class="required">Bakan Kişinin Telefon Numarası</label>
+        <input type="tel" id="caregiverPhone" name="caregiverPhone">
+        <br>
+    </div>
+
+    <!-- Extra Sorular -->
+    <label for="otherQuestions1" class="required">Çocuğun Kronik Hastalığı Var Mı? Varsa Nedir?</label>
+    <textarea id="otherQuestions1" name="otherQuestions1" rows="4" cols="50" style="resize: both;"></textarea>
+    <br><br>
+    <label for="otherQuestions2" class="required">Çocuğun Alerjisi Var Mı? Varsa Nedir?</label>
+    <textarea id="otherQuestions2" name="otherQuestions2" rows="4" cols="50" style="resize: both;"></textarea>
+    <br><br>
+    <label for="otherQuestions3" class="required">Çocuğun Davranış Problemi Var Mı? Varsa Nedir?</label>
+    <textarea id="otherQuestions3" name="otherQuestions3" rows="4" cols="50" style="resize: both;"></textarea>
+    <br><br>
+
+    <button id="submit">Başvuruyu Oluştur</button>
+
+    <!-- <form action="index.php" method="POST"></form>-->
+
+    <form id="userForm">
+        <input type="text" id="name" name="name" required placeholder="Enter your name">
+        <input type="email" id="email" name="email" required placeholder="Enter your email">
+        <!-- Add other fields if you have them -->
+        <button type="submit">Submit</button>
+      </form>
+      
+    <script src="script.js"></script>
+</body>
+</html>
