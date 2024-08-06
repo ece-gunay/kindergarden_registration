@@ -17,7 +17,7 @@ mongoose.connect('mongodb://localhost:27017/kindergarden', {
   useUnifiedTopology: true
 });
 
-
+/*
 // Define a schema and model
 const userSchema = new mongoose.Schema({  
   phone: String,
@@ -53,9 +53,9 @@ const userSchema = new mongoose.Schema({
   behavioralIssues: String
 });
 
+*/
 
 
-/*
 const addressSchema = new mongoose.Schema({
     street: String,
     town: String,
@@ -103,7 +103,7 @@ const userSchema = new mongoose.Schema({
         behavioralIssues: String
     }
 });
-*/
+
 const User = mongoose.model('students', userSchema);
 
 app.post('/api/submit', async (req, res) => {
