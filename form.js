@@ -68,7 +68,7 @@ document.getElementById('submit').addEventListener('click', function(event) {
 */
 
 
-
+/* 1.
 document.getElementById('submit').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent the default form submission
 
@@ -126,9 +126,9 @@ document.getElementById('submit').addEventListener('click', function(event) {
         alert('Form gönderimi başarısız oldu.'); // Alert message for submission failure
     });
 });
+*/
 
 
-/*
 document.getElementById('submit').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -215,7 +215,6 @@ document.getElementById('submit').addEventListener('click', function(event) {
 });
 
 
-*/
 
 function toggleCaregiverInfo() {
     var caregiverWorking = document.querySelector('input[name="caregiverWorking"]:checked');
