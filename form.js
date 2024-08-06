@@ -68,7 +68,7 @@ document.getElementById('submit').addEventListener('click', function(event) {
 */
 
 
-/* 1.
+
 document.getElementById('submit').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent the default form submission
 
@@ -126,9 +126,9 @@ document.getElementById('submit').addEventListener('click', function(event) {
         alert('Form gönderimi başarısız oldu.'); // Alert message for submission failure
     });
 });
-*/
 
 
+/*
 document.getElementById('submit').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -215,52 +215,7 @@ document.getElementById('submit').addEventListener('click', function(event) {
 });
 
 
-/*
-document.addEventListener('DOMContentLoaded', function() {
-    const townSelect = document.getElementById('town');
-    const neighbourhoodSelect = document.getElementById('neighbourhood');
-
-    // Load JSON data
-    fetch('formatted_mahalle.json')
-        .then(response => response.json())
-        .then(data => {
-            // Populate town dropdown
-            data.forEach(town => {
-                const option = document.createElement('option');
-                option.value = town.town;
-                option.textContent = town.town;
-                townSelect.appendChild(option);
-            });
-
-            // Handle town selection
-            townSelect.addEventListener('change', function() {
-                const selectedTown = townSelect.value;
-
-                // Clear previous neighbourhood options
-                neighbourhoodSelect.innerHTML = '<option value="">Select a neighbourhood</option>';
-
-                if (selectedTown) {
-                    const townData = data.find(town => town.town === selectedTown);
-                    if (townData) {
-                        // Populate neighbourhood dropdown
-                        townData.neighbourhoods.forEach(neighbourhood => {
-                            const option = document.createElement('option');
-                            option.value = neighbourhood;
-                            option.textContent = neighbourhood;
-                            neighbourhoodSelect.appendChild(option);
-                        });
-                        neighbourhoodSelect.classList.remove('hidden');
-                    }
-                } else {
-                    neighbourhoodSelect.classList.add('hidden');
-                }
-            });
-        })
-        .catch(error => console.error('Error loading JSON:', error));
-});
-
 */
-
 
 function toggleCaregiverInfo() {
     var caregiverWorking = document.querySelector('input[name="caregiverWorking"]:checked');
