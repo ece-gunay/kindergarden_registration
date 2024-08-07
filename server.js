@@ -17,6 +17,7 @@ mongoose.connect('mongodb://localhost:27017/kindergarden', {
   useUnifiedTopology: true
 });
 
+
 /*
 // Define a schema and model
 const userSchema = new mongoose.Schema({  
@@ -52,80 +53,87 @@ const userSchema = new mongoose.Schema({
   allergies: String,
   behavioralIssues: String
 });
-
 */
 
 
+//yeni userSchema
+
+// Address Schema
 const addressSchema = new mongoose.Schema({
-    street: String,
-    town: String,
-    neighbourhood: String
+  street: String,
+  town: String,
+  neighbourhood: String
 });
 
-const contactSchema = new mongoose.Schema({
-    phone: String,
-    contactPhone: String
-});
-
-const occupationSchema = new mongoose.Schema({
-    occupation: String,
-    occupationType: String,
-    workingHours: String
-});
-
+// Parent Schema
 const parentSchema = new mongoose.Schema({
-    name: String,
-    IDNo: String,
-    address: addressSchema,
-    occupation: occupationSchema,
-    contact: contactSchema
+  name: String,
+  IDNo: String,
+  address: addressSchema,
+  occupation: {
+      occupation: String,
+      occupationType: String,
+      workingHours: String
+  },
+  contact: {
+      phone: String,
+      contactPhone: String
+  }
 });
 
+// Caregiver Schema
 const caregiverSchema = new mongoose.Schema({
-    working: Boolean,
-    IDNo: String,
-    phone: String
+  working: Boolean,
+  IDNo: String,
+  phone: String
 });
 
-const userSchema = new mongoose.Schema({
-    nameSurname: String,
-    IDNo: { type: String, unique: true, required: true },
-    sex: String,
-    apply: String,
-    address: addressSchema,
-    dateBirth: Date,
-    mother: parentSchema,
-    father: parentSchema,
-    caregiver: caregiverSchema,
-    medicalInfo: {
-        chronicDisease: String,
-        allergies: String,
-        behavioralIssues: String
-    }
+// Student Schema
+const studentSchema = new mongoose.Schema({
+  phone: String,
+  nameSurname: String,
+  IDNo: { type: String, unique: true, required: true },
+  sex: String,
+  apply: String,
+  address: addressSchema,
+  dateBirth: Date,
+  mother: parentSchema,
+  father: parentSchema,
+  caregiver: caregiverSchema,
+  medicalInfo: {
+      chronicDisease: String,
+      allergies: String,
+      behavioralIssues: String
+  }
 });
 
-const User = mongoose.model('students', userSchema);
+
+//const User = mongoose.model('students', userSchema); //eski kod
+
+const User = mongoose.model('students', studentSchema); //burası da silinebilir.
+module.exports = User; //burası silinebilrir
+
 
 app.post('/api/submit', async (req, res) => {
-    try {
-        const { IDNo } = req.body;
+  try {
+      const { IDNo } = req.body;
 
-        // Check if IDNo already exists
-        const existingUser = await User.findOne({ IDNo });
+      // Check if IDNo already exists
+      const existingUser = await User.findOne({ IDNo });
 
-        if (existingUser) {
-            return res.status(400).json({ message: 'Başvuru zaten yapıldı' });
-        }
+      if (existingUser) {
+          return res.status(400).json({ message: 'Başvuru zaten yapıldı' });
+      }
 
-        // If not, save the new user
-        const user = new User(req.body);
-        await user.save();
+      // If not, save the new user
+      const user = new User(req.body);
+      await user.save();
 
-        res.status(200).json({ redirectUrl: 'success.html' });
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Sunucu hatası' });
-    }
+      res.status(200).json({ redirectUrl: 'success.html' });
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ message: 'Sunucu hatası' });
+  }
 });
 
 /*

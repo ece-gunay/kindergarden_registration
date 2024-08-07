@@ -128,7 +128,7 @@ document.getElementById('submit').addEventListener('click', function(event) {
 });
 */
 
-
+/*
 document.getElementById('submit').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -213,7 +213,55 @@ document.getElementById('submit').addEventListener('click', function(event) {
         alert('Sunucu hatası. Lütfen daha sonra tekrar deneyiniz.');
     });
 });
+*/
 
+
+
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    const townSelect = document.getElementById('town');
+    const neighbourhoodSelect = document.getElementById('neighbourhood');
+
+    // Load JSON data
+    fetch('formatted_mahalle.json')
+        .then(response => response.json())
+        .then(data => {
+            // Populate town dropdown
+            data.forEach(town => {
+                const option = document.createElement('option');
+                option.value = town.town;
+                option.textContent = town.town;
+                townSelect.appendChild(option);
+            });
+
+            // Handle town selection
+            townSelect.addEventListener('change', function() {
+                const selectedTown = townSelect.value;
+
+                // Clear previous neighbourhood options
+                neighbourhoodSelect.innerHTML = '<option value="">Select a neighbourhood</option>';
+
+                if (selectedTown) {
+                    const townData = data.find(town => town.town === selectedTown);
+                    if (townData) {
+                        // Populate neighbourhood dropdown
+                        townData.neighbourhoods.forEach(neighbourhood => {
+                            const option = document.createElement('option');
+                            option.value = neighbourhood;
+                            option.textContent = neighbourhood;
+                            neighbourhoodSelect.appendChild(option);
+                        });
+                        neighbourhoodSelect.classList.remove('hidden');
+                    }
+                } else {
+                    neighbourhoodSelect.classList.add('hidden');
+                }
+            });
+        })
+        .catch(error => console.error('Error loading JSON:', error));
+});
+
+*/
 
 
 function toggleCaregiverInfo() {
@@ -342,7 +390,91 @@ document.getElementById('submit').addEventListener('click', function(event) {
         alert('Sunucu hatası. Lütfen daha sonra tekrar deneyiniz.');
     });
 });
+
 */
+
+
+//yeni formData
+document.getElementById('submit').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    const formData = {
+        phone: document.getElementById('phone').value,
+        nameSurname: document.getElementById('NameSurname').value,
+        IDNo: document.getElementById('IDNo').value,
+        sex: document.querySelector('input[name="title"]:checked') ? document.querySelector('input[name="title"]:checked').value : '',
+        apply: document.getElementById('apply').value,
+        address: {
+            street: document.getElementById('address').value,
+            town: document.getElementById('town').value,
+            neighbourhood: document.getElementById('neighbourhood').value
+        },
+        dateBirth: document.getElementById('dateBirth').value,
+        mother: {
+            name: document.getElementById('motherName').value,
+            IDNo: document.getElementById('motherIDNo').value,
+            address: {
+                street: document.getElementById('motherAddress').value
+            },
+            occupation: {
+                occupation: document.getElementById('motherOccupation').value,
+                occupationType: document.querySelector('input[name="motherOccupationType"]:checked') ? document.querySelector('input[name="motherOccupationType"]:checked').value : '',
+                workingHours: document.getElementById('motherWorkingHours').value
+            },
+            contact: {
+                phone: document.getElementById('motherPhone').value,
+                contactPhone: document.getElementById('motherContactPhone').value
+            }
+        },
+        father: {
+            name: document.getElementById('fatherName').value,
+            IDNo: document.getElementById('fatherIDNo').value,
+            address: {
+                street: document.getElementById('fatherAddress').value
+            },
+            occupation: {
+                occupation: document.getElementById('fatherOccupation').value,
+                occupationType: document.querySelector('input[name="fatherOccupationType"]:checked') ? document.querySelector('input[name="fatherOccupationType"]:checked').value : '',
+                workingHours: document.getElementById('fatherWorkingHours').value
+            },
+            contact: {
+                phone: document.getElementById('fatherPhone').value,
+                contactPhone: document.getElementById('fatherContactPhone').value
+            }
+        },
+        caregiver: {
+            working: document.querySelector('input[name="caregiverWorking"]:checked') ? document.querySelector('input[name="caregiverWorking"]:checked').value : '',
+            IDNo: document.getElementById('caregiverIDNo').value,
+            phone: document.getElementById('caregiverPhone').value
+        },
+        medicalInfo: {
+            chronicDisease: document.getElementById('chronicDisease').value,
+            allergies: document.getElementById('allergies').value,
+            behavioralIssues: document.getElementById('behavioralIssues').value
+        }
+    };
+
+    fetch('http://localhost:7001/api/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        if (data.message === 'Form başarıyla gönderildi!') {
+            window.location.href = 'success.html'; // Redirect to success page
+        } else {
+            alert(data.message); // Show the error message
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Sunucu hatası. Lütfen daha sonra tekrar deneyiniz.');
+    });
+});
 
 //önce ilçeyi sonra mahalleyi çıkarır
 
