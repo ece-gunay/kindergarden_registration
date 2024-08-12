@@ -454,6 +454,7 @@ document.getElementById('submit').addEventListener('click', function(event) {
         }
     };
 
+    // Send form data to the backend
     fetch('http://localhost:7001/api/submit', {
         method: 'POST',
         headers: {
@@ -463,9 +464,8 @@ document.getElementById('submit').addEventListener('click', function(event) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Success:', data);
-        if (data.message === 'Form başarıyla gönderildi!') {
-            window.location.href = 'success.html'; // Redirect to success page
+        if (data.redirectUrl) {
+            window.location.href = data.redirectUrl; // Redirect to success page
         } else {
             alert(data.message); // Show the error message
         }

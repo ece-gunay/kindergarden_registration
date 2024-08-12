@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path'); // Bu satırı ekleyin
 
 const app = express();
 const port = 7001;
+app.set('view engine', 'ejs');
 
 
 // Middleware
@@ -149,7 +151,32 @@ app.post('/api/submit', async (req, res) => {
 });
 */
 
+// Veritabanındaki tüm kullanıcıları getiren endpoint
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.get('/admin', async (req, res) => {
+  try {
+    const users = await User.find(); // Ensure this query is correct
+    res.render('admin', { users }); // Ensure 'admin.ejs' exists in the 'views' folder
+  } catch (err) {
+    console.error('Error loading admin panel:', err); // Log the error for debugging
+    res.status(500).send('Error loading admin panel');
+  }
+});
+
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+//serve static files
+app.use(express.static('public'));
