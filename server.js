@@ -4,14 +4,44 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path'); // Bu satırı ekleyin
 
+const session = require('express-session');
+
 const app = express();
 const port = 7001;
+const bcrypt = require('bcrypt');
+
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); 
 
 
+
+/*
 // Middleware
 app.use(cors()); // To allow cross-origin requests
 app.use(bodyParser.json()); // To parse JSON bodies
+
+
+// Diğer middleware'lerin üstüne ekleyin
+app.use(session({
+  secret: 'your_secret_key',  // Burada güvenli bir anahtar kullanın
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }  // HTTPS kullanıyorsanız true yapın
+}));
+*/
+
+
+// Body-parser middleware'ini kullanma
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Session middleware'i ekleyin
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+}));
+
 
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/kindergarden', {
@@ -19,46 +49,6 @@ mongoose.connect('mongodb://localhost:27017/kindergarden', {
   useUnifiedTopology: true
 });
 
-
-/*
-// Define a schema and model
-const userSchema = new mongoose.Schema({  
-  phone: String,
-  NameSurname: String,
-  IDNo: String,
-  sex: String,
-  apply: String,
-  address: String,
-  town: String,
-  neighbourhood: String,
-  dateBirth: Date,
-  motherName: String,
-  motherIDNo: String,
-  motherAddress: String,
-  motherOccupation: String,
-  motherOccupationType: String,
-  motherPhone: String,
-  motherContactPhone: String,
-  motherWorkingHours: String,
-  fatherName: String,
-  fatherIDNo: String,
-  fatherAddress: String,
-  fatherOccupation: String,
-  fatherOccupationType: String,
-  fatherPhone: String,
-  fatherContactPhone: String,
-  fatherWorkingHours: String,
-  caregiverWorking: String,
-  caregiverIDNo: String,
-  caregiverPhone: String,
-  chronicDisease: String,
-  allergies: String,
-  behavioralIssues: String
-});
-*/
-
-
-//yeni userSchema
 
 // Address Schema
 const addressSchema = new mongoose.Schema({
@@ -110,12 +100,11 @@ const studentSchema = new mongoose.Schema({
 });
 
 
-//const User = mongoose.model('students', userSchema); //eski kod
-
 const User = mongoose.model('students', studentSchema); //burası da silinebilir.
 module.exports = User; //burası silinebilrir
 
 
+//submit edildiğinde ID numarasını kontrol eder. ID uniquedir.
 app.post('/api/submit', async (req, res) => {
   try {
       const { IDNo } = req.body;
@@ -138,20 +127,7 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
-/*
-// Endpoint to handle form submission
-app.post('/api/submit', async (req, res) => {
-  try {
-    const newUser = new User(req.body);
-    await newUser.save();
-    res.status(201).json({ message: 'User created successfully', data: newUser });
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating user', error });
-  }
-});
-*/
-
-// Veritabanındaki tüm kullanıcıları getiren endpoint
+// Veritabanındaki tüm kullanıcıları getiren endpoint JSONN olarak getiirir.
 app.get('/api/users', async (req, res) => {
   try {
     const users = await User.find();
@@ -161,6 +137,9 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+/*
+
+//databasedeki isim ve tcleri getiren end-point tablo yapar.
 app.get('/admin', async (req, res) => {
   try {
     const users = await User.find(); // Ensure this query is correct
@@ -170,7 +149,100 @@ app.get('/admin', async (req, res) => {
     res.status(500).send('Error loading admin panel');
   }
 });
+*/
 
+//admin paneki authent için
+// Admin Schema
+const adminSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
+});
+
+//const Admin = mongoose.model('admins', adminSchema);
+const Admin = mongoose.model('Admin', adminSchema, 'admins');
+module.exports = Admin;
+
+app.get('/login', (req, res) => {
+  res.render('login', { error: null });
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  
+  console.log(username);
+  console.log(password)
+  
+  try {
+    // Admin kullanıcıyı veritabanında bul
+    //const admin = await Admin.findOne({ username });  // Burada `text` yerine `username` kullanın
+    const admin = await Admin.findOne({ username: username });
+
+    if (!admin) {
+      // Eğer admin bulunamazsa
+      return res.status(401).send('Giriş başarısız: Admin bulunamadı');
+    }
+    
+    // Şifreyi doğrulayın
+    if (admin.password !== password) {
+      // Eğer şifre eşleşmezse
+      return res.status(401).send('Giriş başarısız: Şifre yanlış');
+    }
+    
+    // Session veya token yaratma
+    req.session.adminId = admin._id; // Session-based authentication
+    res.redirect('/admin'); // Admin paneline yönlendir
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Sunucu hatası');
+  }
+
+});
+
+
+
+/*
+app.get('/login', (req, res) => {
+    res.render('login', { error: null });
+});
+
+
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  
+  // Admin kullanıcıyı veritabanında bul
+  const admin = await Admin.findOne({ username });
+  if (admin.password !== password) {
+    return res.status(401).send('Giriş başarısız password yanlış');
+  }
+  else if(!admin){
+    return res.status(401).send('Giriş başarısız admin yok');
+  }
+  else{ 
+    return res.status(401).send('password dor');
+  }
+
+
+      // Session veya token yaratma
+  req.session.adminId = admin._id; // Session-based authentication
+  res.redirect('/admin'); // Admin paneline yönlendir
+});
+*/
+
+
+app.get('/admin', async (req, res) => {
+  if (!req.session.adminId) {
+    return res.redirect('/login'); // Giriş yapılmamışsa login sayfasına yönlendir
+  }
+
+  try {
+    const users = await User.find(); // Veritabanındaki kullanıcıları al
+    res.render('admin', { users }); // admin.ejs dosyasını render et
+  } catch (err) {
+    console.error('Error loading admin panel:', err);
+    res.status(500).send('Error loading admin panel');
+  }
+});
 
 
 // Start the server
