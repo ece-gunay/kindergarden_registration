@@ -32,6 +32,7 @@ app.use(session({
 
 
 // Body-parser middleware'ini kullanma
+app.use(cors()); // To allow cross-origin requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

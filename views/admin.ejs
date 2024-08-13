@@ -1,35 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel</title>
   <style>
-    table, th, td {
-      border: 1px solid black;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      width: 100%;
       border-collapse: collapse;
+      margin: 20px 0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
     }
     th, td {
-      padding: 10px;
+      border: 1px solid #ddd;
+      padding: 12px;
       text-align: left;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #ddd;
+    }
+    @media (max-width: 768px) {
+      table {
+        border: 0;
+      }
+      table thead {
+        display: none;
+      }
+      table tr {
+        margin-bottom: 10px;
+        display: block;
+        border-bottom: 2px solid #ddd;
+      }
+      table td {
+        display: block;
+        text-align: right;
+        font-size: 14px;
+        border-bottom: 1px solid #ddd;
+      }
+      table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        text-transform: uppercase;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Admin Panel</h1>
   <table>
-    <tr>
-      <th>Name</th>
-      <th>ID No</th>
-      <th>Phone</th>
-      <!-- Add other headers as needed -->
-    </tr>
-    <% users.forEach(user => { %>
-    <tr>
-      <td><%= user.nameSurname %></td>
-      <td><%= user.IDNo %></td>
-      <td><%= user.phone %></td>
-      <!-- Add other user data as needed -->
-    </tr>
-    <% }); %>
+    <thead>
+      <tr>
+        <th>ID No</th>
+        <th>İsim</th>
+        <th>Cinsiyet</th>
+        <th>Doğum Tarihi</th>
+        <th>İlçe</th>
+        <th>Mahalle</th>
+        <th>Anne Adı</th>
+        <th>Baba Adı</th>
+        <!-- Add other headers as needed -->
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user => { %>
+      <tr>
+        <td data-label="ID No"><%= user.IDNo %></td>
+        <td data-label="İsim"><%= user.nameSurname %></td>
+        <td data-label="Cinsiyet"><%= user.sex %></td>
+        <td data-label="Doğum Tarihi"><%= new Date(user.dateBirth).toLocaleDateString() %></td>
+        <td data-label="İlçe"><%= user.address.town %></td>
+        <td data-label="Mahalle"><%= user.address.neighbourhood %></td>
+        <td data-label="Anne Adı"><%= user.mother.name %></td>
+        <td data-label="Baba Adı"><%= user.father.name %></td>
+        <!-- Add other user data as needed -->
+      </tr>
+      <% }); %>
+    </tbody>
   </table>
 </body>
 </html>
