@@ -62,6 +62,34 @@
         text-transform: uppercase;
       }
     }
+
+    /* Genel buton stil ayarları */
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Güncelle buton stil ayarları */
+    #update {
+        background-color: #18c71e; /* Yeşil */
+    }
+    #update:hover {
+        background-color: #45a049; /* Koyu Yeşil */
+    }
+
+    /* Sil buton stil ayarları */
+    #remove {
+        background-color: #f44336; /* Kırmızı */
+    }
+    #remove:hover {
+        background-color: #e53935; /* Koyu Kırmızı */
+    }  
+
   </style>
 </head>
 <body>
@@ -91,6 +119,21 @@
         <td data-label="Mahalle"><%= user.address.neighbourhood %></td>
         <td data-label="Anne Adı"><%= user.mother.name %></td>
         <td data-label="Baba Adı"><%= user.father.name %></td>
+        
+        <td>
+          <form action="/admin/delete/<%= user.IDNo %>" method="POST" style="display:inline;">
+            <button id="remove" type="submit" onclick="return confirm('Bu öğrenciyi silmek istediğinizden emin misiniz?');">Sil</button>
+          </form>
+        </td>
+        <td>
+          <form action="/admin/update/<%= user.IDNo %>" method="GET" style="display:inline;">
+            <button id="update" type="submit">Güncelle</button>
+          </form>
+        </td>
+        
+
+        <!--<td> <button id="update"> Güncelle </button></td> -->
+        <!-- <td> <button id="remove"> Sil </button></td> -->
         <!-- Add other user data as needed -->
       </tr>
       <% }); %>

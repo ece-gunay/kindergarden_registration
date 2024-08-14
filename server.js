@@ -245,6 +245,53 @@ app.get('/admin', async (req, res) => {
   }
 });
 
+// Öğrenci Silme Route'u
+app.post('/admin/delete/:IDNo', async (req, res) => {
+  try {
+    const IDNo = req.params.IDNo;
+    await User.findOneAndDelete({ IDNo: IDNo });
+    res.redirect('/admin');  // Silme işlemi başarılı olursa admin paneline geri dön
+  } catch (error) {
+    console.error('Öğrenci silinirken bir hata oluştu:', error);
+    res.status(500).send('Sunucu hatası');
+  }
+});
+
+// Öğrenci güncelleme sayfasını yükler
+app.get('/admin/update/:IDNo', async (req, res) => {
+  try {
+    const IDNo = req.params.IDNo;
+    const user = await User.findOne({ IDNo: IDNo });
+
+    if (!user) {
+      return res.status(404).send('Öğrenci bulunamadı');
+    }
+
+    res.render('update', { user });
+  } catch (error) {
+    console.error('Güncelleme sayfası yüklenirken bir hata oluştu:', error);
+    res.status(500).send('Sunucu hatası');
+  }
+});
+
+// Öğrenci bilgilerini günceller
+app.post('/admin/update/:IDNo', async (req, res) => {
+  try {
+    const IDNo = req.params.IDNo;
+    const updatedData = req.body;
+
+    // Öğrenciyi güncelle
+    await User.findOneAndUpdate({ IDNo: IDNo }, updatedData, { new: true });
+
+    res.redirect('/admin'); // Güncelleme sonrası admin paneline geri dön
+  } catch (error) {
+    console.error('Öğrenci güncellenirken bir hata oluştu:', error);
+    res.status(500).send('Sunucu hatası');
+  }
+});
+
+
+
 
 // Start the server
 app.listen(port, () => {

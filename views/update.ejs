@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Öğrenci Bilgilerini Güncelle</title>
+</head>
+<body>
+  <h1>Öğrenci Bilgilerini Güncelle</h1>
+  <form action="/admin/update/<%= user.IDNo %>" method="POST">
+    <label for="nameSurname">İsim Soyisim:</label>
+    <input type="text" id="nameSurname" name="nameSurname" value="<%= user.nameSurname %>">
+
+    <label for="sex">Cinsiyet:</label>
+    <input type="text" id="sex" name="sex" value="<%= user.sex %>">
+
+    <label for="dateBirth">Doğum Tarihi:</label>
+    <input type="date" id="dateBirth" name="dateBirth" value="<%= new Date(user.dateBirth).toISOString().substr(0, 10) %>">
+
+    <!-- Diğer alanlar için de inputlar ekleyebilirsiniz -->
+
+    <button type="submit">Güncelle</button>
+  </form>
+</body>
+</html>
